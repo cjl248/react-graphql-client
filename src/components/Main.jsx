@@ -8,6 +8,10 @@ const GET_BOOKS = gql`
       id,
       title,
       pages
+      author {
+        id,
+        last_name
+      }
     }
   }
 `
@@ -23,7 +27,7 @@ const Books = () => {
   return books.map((book, index) => {
     return (
       <div className='book'>
-        {`${book.title} | ${book.pages}`}
+        {`Title: ${book.title} | Author: ${book.author.last_name} | Pages: ${book.pages}`}
       </div>
     )
   })
