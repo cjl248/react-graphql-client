@@ -1,25 +1,41 @@
 import './app.scss';
+import React from 'react'
+// import Posts from './components/Posts.jsx'
 import Header from './components/Header.jsx'
 import Main from './components/Main.jsx'
 import Footer from './components/Footer.jsx'
+import {
+  gql,
+  useQuery,
+} from '@apollo/client'
 
-import ApolloClient from 'apollo-boost'
-import { ApolloProvider } from 'react-apollo'
+const GET_BOOKS = gql`
+  {
+    books {
+      id,
+      title,
+      pages
+      author {
+        id,
+        last_name
+      }
+    }
+  }
+`;
 
-const client = new ApolloClient({
-  uri: "http://localhost:5000/graphql"
-})
+export default function App() {
 
-function App() {
+  const [page, setPage] = React.useState('show-books')
+
+  const { loading, error, data } = useQuery( GET_BOOKS )
+  if (loading) return <h1>{`Loading`}</h1>
+  if (error) return <h1>{`Error`}</h1>
+  const books = data.books
   return (
-    <ApolloProvider client={client}>
-      <div className="app">
-        <Header />
-        <Main />
-        <Footer />
-      </div>
-    </ApolloProvider>
+    <div className="app">
+      <Header />
+      <Main page={page} books={books} />
+      <Footer setPage={setPage} />
+    </div>
   )
 }
-
-export default App;
