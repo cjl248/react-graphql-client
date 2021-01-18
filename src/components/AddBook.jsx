@@ -1,5 +1,5 @@
 import React from 'react'
-import { gql, useMutation, refetchQueries } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import { GET_BOOKS } from './../App.js'
 
 const ADD_BOOK = gql`
@@ -23,7 +23,7 @@ export default function AddBook({books, setBookList}) {
   const [author, setAuthor] = React.useState('')
   const [pages, setPages] = React.useState('')
 
-  const [addBook, { data }] = useMutation(ADD_BOOK)
+  const [addBook] = useMutation(ADD_BOOK)
 
   const handleAddBook = () => {
     setTitle('')
@@ -61,31 +61,31 @@ export default function AddBook({books, setBookList}) {
   }
   return (
     <div className='add-book-container'>
-      <div>
-        <div>{`Title: `}</div>
-        <input
+      <div className='input-group'>
+        <div className='label'>{`Title: `}</div>
+        <input className='input'
           type='text-field'
           value={title}
           onChange={(e)=>{setTitle(e.target.value)}}>
         </input>
       </div>
-      <div>
-        <div>{`Pages: `}</div>
-        <input
+      <div className='input-group'>
+        <div className='label'>{`Pages: `}</div>
+        <input className='input'
           type='text-field'
           value={pages}
           onChange={(e)=>{setPages(parseInt(e.target.value))}}>
         </input>
       </div>
-      <div>
-        <div>{`Author: `}</div>
-        <input
+      <div className='input-group'>
+        <div className='label'>{`Author: `}</div>
+        <input className='input'
           type='text-field'
           value={author}
           onChange={(e)=>{setAuthor(parseInt(e.target.value))}}>
         </input>
       </div>
-      <button onClick={handleAddBook}>{`Add Book`}</button>
+      <div className='button' onClick={handleAddBook}>{`Add Book`}</div>
     </div>
   )
 }

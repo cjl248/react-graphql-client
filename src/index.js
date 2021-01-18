@@ -9,31 +9,29 @@ import {
   InMemoryCache,
 } from '@apollo/client'
 
-const defaultOptions = {
-  watchQuery: {
-    fetchPolicy: 'no-cache',
-    nextFetchPolicy: "cache-first",
-    errorPolicy: 'all',
-  },
-  query: {
-    fetchPolicy: 'no-cache',
-    nextFetchPolicy: "cache-first",
-    errorPolicy: 'all',
-  },
-  mutate: {
-    fetchPolicy: 'network-only',
-    nextFetchPolicy: "cache-first",
-    errorPolicy: 'all',
-    awaitRefetchQueries: true
-  },
-};
-
 
 const client = new ApolloClient({
   uri: "http://localhost:5000/graphql",
   cache: new InMemoryCache({
-    defaultOptions,
-    addTypeName: true,
+    optimistic: true,
+    typePolicies: {
+      Book: {
+        keyArgs: false,
+        merge(existing, incoming){
+          let books = []
+          if (existing && existing.books) {
+            books = books.concat(existing.books)
+          }
+          if (incoming && incoming.books) {
+            books = books.concat(incoming.books)
+          }
+          return {
+            ...incoming,
+            books,
+          }
+        }
+      }
+    }
   }),
 });
 
