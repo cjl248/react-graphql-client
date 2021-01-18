@@ -9,7 +9,7 @@ import {
   useQuery,
 } from '@apollo/client'
 
-const GET_BOOKS = gql`
+export const GET_BOOKS = gql`
   {
     books {
       id,
@@ -34,7 +34,7 @@ export default function App() {
   return (
     <div className="app">
       <Header />
-      <Main page={page} books={books} />
+      <Main page={page} books={books}/>
       <Footer setPage={setPage} />
     </div>
   )

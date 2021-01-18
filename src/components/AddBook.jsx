@@ -1,5 +1,6 @@
 import React from 'react'
 import { gql, useMutation, refetchQueries } from '@apollo/client'
+import { GET_BOOKS } from './../App.js'
 
 const ADD_BOOK = gql`
   mutation add_book($title: String!, $pages: Int!, $author_id: Int!) {
@@ -16,48 +17,48 @@ const ADD_BOOK = gql`
   }
 `;
 
-const GET_BOOKS = gql`
-  {
-    books {
-      id,
-      title,
-      pages
-      author {
-        id,
-        last_name
-      }
-    }
-  }
-`;
-
 export default function AddBook({books, setBookList}) {
 
   const [title, setTitle] = React.useState('')
   const [author, setAuthor] = React.useState('')
   const [pages, setPages] = React.useState('')
 
-  const [addBook, { mutate, data, error }] = useMutation(ADD_BOOK)
+  const [addBook, { data }] = useMutation(ADD_BOOK)
 
   const handleAddBook = () => {
     setTitle('')
     setAuthor('')
     setPages('')
+
     addBook({
       variables: {
-        title: title,
-        pages: pages,
-        author_id: author,
+        title,
+        pages,
+        author_id: author
       },
-      options: {
-        awaitRefetchQueries: true
+      update(cache, { data: { addBook } }) {
+        try {
+          const books = cache.readQuery({
+            query: GET_BOOKS
+          })
+          const newBook = {
+            title: title,
+            pages: pages,
+            author_id: author,
+            __typename: 'Book',
+          }
+          return cache.writeQuery({
+            query: GET_BOOKS,
+            data: {
+              books: [books, newBook]
+            }
+          })
+        } catch(e) {
+          console.log("Error: ", e);
+        }
       }
-    }, {
-      refetchQueries: [
-        {query: GET_BOOKS}
-      ]
     })
   }
-
   return (
     <div className='add-book-container'>
       <div>
