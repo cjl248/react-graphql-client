@@ -15,7 +15,7 @@ const Footer = ({setPage}) => {
       <div
         className='button'
         onClick={clickAddBook}>
-        {`Add Books`}
+        {`Add a Book`}
       </div>
     </div>
   )

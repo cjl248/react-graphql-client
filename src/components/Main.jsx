@@ -1,5 +1,5 @@
 import React from 'react'
-import { gql, useQuery, useMutation } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import AddBook from './AddBook.jsx'
 import { GET_BOOKS } from './../App.js'
 
@@ -18,7 +18,7 @@ const DELETE_BOOK = gql`
 
 const Books = ({books}) => {
 
-  const [deleteBook, { data }] = useMutation(DELETE_BOOK)
+  const [deleteBook] = useMutation(DELETE_BOOK)
 
   const handleDelete = (id) => {
     deleteBook({
@@ -65,7 +65,7 @@ const Main = ({ page, books }) => {
     if (page === 'show-books') {
       return (
         <>
-          <div className='book-container-title'>{`~Books~`}</div>
+          <div className='book-container-title'>{`~Recommendations~`}</div>
           <div className='book-container'>
             <Books books={books} />
           </div>
