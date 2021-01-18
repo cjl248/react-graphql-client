@@ -1,6 +1,7 @@
 import React from 'react'
 import { gql, useQuery, useMutation } from '@apollo/client'
 import AddBook from './AddBook.jsx'
+import { GET_BOOKS } from './../App.js'
 
 const DELETE_BOOK = gql`
   mutation delete_book($id: ID!) {
@@ -17,18 +18,25 @@ const DELETE_BOOK = gql`
 
 const Books = ({books}) => {
 
-
-  const [deleteBook] = useMutation(DELETE_BOOK)
+  const [deleteBook, { data }] = useMutation(DELETE_BOOK)
 
   const handleDelete = (id) => {
     deleteBook({
       variables: {
         id
       },
-      update: cache => {
-        const data = cache.writeQuery({query: DELETE_BOOK})
-      },
-      variables: {id: id}
+      update(cache, { data: { deleteBook } }) {
+        const data = cache.readQuery({ query: GET_BOOKS })
+        const filteredBookList = data.books.filter(book => {
+          return book.id !== id
+        })
+        return cache.writeQuery({
+          query: GET_BOOKS,
+          data: {
+            books: filteredBookList,
+          }
+        })
+      }
     })
   }
 
@@ -37,7 +45,7 @@ const Books = ({books}) => {
       return (
         <div className='book' key={book.id}>
           <div className='title'>{book.title}</div>
-          <div className='author'>{`By: ${book.author.last_name}`}</div>
+          <div className='author'>{`By: ${book && book.author.last_name}`}</div>
           <div
             className='button'
             onClick={()=>{handleDelete(book.id)}}>
@@ -53,20 +61,18 @@ const Books = ({books}) => {
 
 const Main = ({ page, books }) => {
 
-  const [bookList, setBookList] = React.useState(books)
-
   const renderMain = () => {
     if (page === 'show-books') {
       return (
         <>
           <div className='book-container-title'>{`~Books~`}</div>
           <div className='book-container'>
-            <Books books={bookList} />
+            <Books books={books} />
           </div>
         </>
       )
     } else if (page === 'add-book') {
-      return <AddBook books={bookList} setBookList={setBookList} />
+      return <AddBook books={books} />
     }
   }
 
