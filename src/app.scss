@@ -1,3 +1,8 @@
+@function theme-spacing($units) {
+  $multiplied: 8*$units;
+  @return $multiplied * 1px;
+}
+
 .app {
   text-align: center;
   display: flex;
@@ -9,7 +14,7 @@
 
 @media (min-width: 400px) {
   .header-container {
-    font-size: 32px;
+    font-size: theme-spacing(4);
   }
 }
 
@@ -71,7 +76,23 @@
   }
 }
 
-.add-book-container {
+@media (min-width: 400px) {
+  .input-group {
+    justify-content: center;
+
+    .label {
+      width: 30%;
+    }
+  }
+}
+
+@media (max-width: 399px) {
+  .input-group {
+    justify-content: space-between;
+  }
+}
+
+.add-container {
   height: 60vh;
   display: flex;
   flex-direction: column;
@@ -82,12 +103,12 @@
     display: flex;
     flex-direction: row;
     width: 85vw;
-    justify-content: space-between;
+
     align-items: baseline;
 
     .label {
       color: darkblue;
-      font-size: 24px;
+      font-size: theme-spacing(3);
       font-weight: 600;
     }
 
@@ -107,6 +128,76 @@
   }
 }
 
+.author-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: auto;
+  min-height: auto;
+  overflow-y: scroll;
+}
+
+@media (min-width: 400px) {
+  .author-container-title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 399px) {
+  .author-container-title {
+    font-size: 26px;
+  }
+}
+
+.author-container-title {
+  color: darkblue;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.show-authors-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: auto;
+  min-height: 100%;
+
+  .author {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+
+    .first-name {
+      color: darkblue;
+      font-size: theme-spacing(2.5);
+    }
+
+    .last-name {
+      color: darkblue;
+      font-size: theme-spacing(2.5);
+      font-weight: bold;
+    }
+
+    .books {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: baseline;
+      height: 50px;
+      overflow-x: scroll;
+      height: auto;
+      width: 350px;
+      margin-top: 10px;
+
+      .book {
+        margin: 0 10px;
+      }
+    }
+  }
+}
+
 .footer-container {
   // border-top: 1px solid teal;
   flex: 1 1 15%;
@@ -118,26 +209,29 @@
 
 }
 
-@media (max-width: 399px) {
+@media (max-width: 499px) {
   .button {
+    height: 40px;
     width: 125px;
   }
 }
 
-@media (min-width: 400px) {
+@media (min-width: 500px) {
   .button {
+    height: 25px;
     width: 175px;
   }
 }
 
 .button {
   // width: 150px;
-  height: 25px;
+  // height: 25px;
   text-align: center;
   padding-top: 5px;
   margin: 5px;
   border: 1px solid darkblue;
   border-radius: 5px;
+  align-self: center;
 
   &:hover {
     color: white;

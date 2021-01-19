@@ -3,7 +3,9 @@ import React from 'react'
 const Footer = ({setPage}) => {
 
   const showBooks = () => setPage('show-books')
-  const clickAddBook = () => setPage('add-book')
+  const addBook = () => setPage('add-book')
+  const showAuthors = () => setPage('show-authors')
+  const addAuthor = () => setPage('add-author')
 
   return (
     <div className='footer-container'>
@@ -14,8 +16,18 @@ const Footer = ({setPage}) => {
       </div>
       <div
         className='button'
-        onClick={clickAddBook}>
+        onClick={addBook}>
         {`Add a Book`}
+      </div>
+      <div
+        className='button'
+        onClick={showAuthors}>
+        {`Show Authors`}
+      </div>
+      <div
+        className='button'
+        onClick={addAuthor}>
+        {`Add an Author`}
       </div>
     </div>
   )

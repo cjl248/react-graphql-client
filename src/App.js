@@ -25,7 +25,7 @@ export const GET_BOOKS = gql`
 
 export default function App() {
 
-  const [page, setPage] = React.useState('add-book')
+  const [page, setPage] = React.useState('show-authors')
 
   const { loading, error, data } = useQuery( GET_BOOKS )
   if (loading) return <h1>{`Loading`}</h1>
