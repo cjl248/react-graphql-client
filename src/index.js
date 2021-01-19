@@ -16,7 +16,7 @@ const client = new ApolloClient({
     optimistic: true,
     typePolicies: {
       Book: {
-        keyArgs: false,
+        keyArgs: ["id", "title"],
         merge(existing, incoming){
           let books = []
           if (existing && existing.books) {
@@ -28,6 +28,22 @@ const client = new ApolloClient({
           return {
             ...incoming,
             books,
+          }
+        }
+      },
+      Author: {
+        keyArgs: ["id", "last_name"],
+        merge(existing, incoming) {
+          let authors = []
+          if (existing && existing.authors) {
+            authors = authors.concat(existing.authors)
+          }
+          if (incoming && incoming.authors) {
+            authors = authors.concat(incoming.authors)
+          }
+          return {
+            ...incoming,
+            authors,
           }
         }
       }
